@@ -1,0 +1,657 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<h2 class="mb-4">Business ERP Dashboard</h2>
+
+
+<!-- ========================================================= -->
+<!-- DASHBOARD SUMMARY CARDS -->
+<!-- ========================================================= -->
+
+<div class="row">
+
+
+    <!-- Products -->
+    <div class="col-md-3 mb-3">
+
+        <a href="/products/" class="text-decoration-none">
+
+            <div class="card bg-primary text-white shadow">
+
+                <div class="card-body text-center">
+
+                    <h5>Total Products</h5>
+
+                    <h2>
+                        {{ total_products }}
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </a>
+
+    </div>
+
+
+
+    <!-- Customers -->
+    <div class="col-md-3 mb-3">
+
+        <a href="/customers/" class="text-decoration-none">
+
+            <div class="card bg-success text-white shadow">
+
+                <div class="card-body text-center">
+
+                    <h5>Total Customers</h5>
+
+                    <h2>
+                        {{ total_customers }}
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </a>
+
+    </div>
+
+
+
+    <!-- CRM -->
+    <div class="col-md-3 mb-3">
+
+        <a href="/crm/" class="text-decoration-none">
+
+            <div class="card bg-secondary text-white shadow">
+
+                <div class="card-body text-center">
+
+                    <h5>CRM</h5>
+
+                    <h2>
+                        Customer Leads
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </a>
+
+    </div>
+
+
+
+    <!-- Suppliers -->
+    <div class="col-md-3 mb-3">
+
+        <a href="/suppliers/" class="text-decoration-none">
+
+            <div class="card bg-warning text-dark shadow">
+
+                <div class="card-body text-center">
+
+                    <h5>Total Suppliers</h5>
+
+                    <h2>
+                        {{ total_suppliers }}
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </a>
+
+    </div>
+
+
+
+    <!-- Sales -->
+    <div class="col-md-3 mb-3">
+
+        <a href="/sales/" class="text-decoration-none">
+
+            <div class="card bg-info text-white shadow">
+
+                <div class="card-body text-center">
+
+                    <h5>Total Sales</h5>
+
+                    <h2>
+                        {{ total_sales }}
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </a>
+
+    </div>
+
+
+
+    <!-- Purchases -->
+    <div class="col-md-3 mb-3">
+
+        <a href="/purchase/" class="text-decoration-none">
+
+            <div class="card bg-danger text-white shadow">
+
+                <div class="card-body text-center">
+
+                    <h5>Total Purchases</h5>
+
+                    <h2>
+                        {{ total_purchases }}
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </a>
+
+    </div>
+
+
+
+    <!-- Inventory Value -->
+    <div class="col-md-3 mb-3">
+
+        <div class="card bg-secondary text-white shadow">
+
+            <div class="card-body text-center">
+
+                <h5>Inventory Value</h5>
+
+                <h4>
+                    ₹ {{ inventory_value }}
+                </h4>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- Receivables -->
+    <div class="col-md-3 mb-3">
+
+        <div class="card bg-dark text-white shadow">
+
+            <div class="card-body text-center">
+
+                <h5>Receivables</h5>
+
+                <h4>
+                    ₹ {{ receivables }}
+                </h4>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- Payables -->
+    <div class="col-md-3 mb-3">
+
+        <div class="card bg-primary text-white shadow">
+
+            <div class="card-body text-center">
+
+                <h5>Payables</h5>
+
+                <h4>
+                    ₹ {{ payables }}
+                </h4>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+</div>
+
+
+
+<hr>
+
+
+
+<!-- ========================================================= -->
+<!-- SALES & PURCHASE CHARTS -->
+<!-- ========================================================= -->
+
+<div class="row">
+
+
+    <!-- Monthly Sales -->
+    <div class="col-md-6 mb-4">
+
+        <div class="card shadow">
+
+            <div class="card-header bg-success text-white">
+
+                Monthly Sales
+
+            </div>
+
+            <div class="card-body">
+
+                <canvas id="salesChart"></canvas>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- Monthly Purchases -->
+    <div class="col-md-6 mb-4">
+
+        <div class="card shadow">
+
+            <div class="card-header bg-danger text-white">
+
+                Monthly Purchases
+
+            </div>
+
+            <div class="card-body">
+
+                <canvas id="purchaseChart"></canvas>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+</div>
+
+
+
+<hr>
+
+
+
+<!-- ========================================================= -->
+<!-- LOW STOCK & RECENT SALES -->
+<!-- ========================================================= -->
+
+<div class="row">
+
+
+    <!-- Low Stock Products -->
+    <div class="col-md-6 mb-4">
+
+        <div class="card shadow">
+
+            <div class="card-header bg-warning">
+
+                Low Stock Products
+
+            </div>
+
+            <div class="card-body">
+
+                <table class="table table-bordered">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Product
+                            </th>
+
+                            <th>
+                                Stock
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+
+                    {% for product in low_stock %}
+
+                        <tr>
+
+                            <td>
+                                {{ product.product_name }}
+                            </td>
+
+                            <td>
+
+                                <span class="badge bg-danger">
+
+                                    {{ product.quantity }}
+
+                                </span>
+
+                            </td>
+
+                        </tr>
+
+
+                    {% empty %}
+
+                        <tr>
+
+                            <td colspan="2"
+                                class="text-center text-success">
+
+                                No Low Stock Products
+
+                            </td>
+
+                        </tr>
+
+                    {% endfor %}
+
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- Recent Sales -->
+    <div class="col-md-6 mb-4">
+
+        <div class="card shadow">
+
+            <div class="card-header bg-info text-white">
+
+                Recent Sales
+
+            </div>
+
+
+            <div class="card-body">
+
+                <table class="table table-striped">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Invoice
+                            </th>
+
+                            <th>
+                                Customer
+                            </th>
+
+                            <th>
+                                Total
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+
+                    {% for sale in recent_sales %}
+
+                        <tr>
+
+                            <td>
+                                {{ sale.invoice_no }}
+                            </td>
+
+                            <td>
+                                {{ sale.customer }}
+                            </td>
+
+                            <td>
+                                ₹ {{ sale.grand_total }}
+                            </td>
+
+                        </tr>
+
+
+                    {% empty %}
+
+                        <tr>
+
+                            <td colspan="3">
+
+                                No Sales Found
+
+                            </td>
+
+                        </tr>
+
+                    {% endfor %}
+
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+</div>
+
+
+
+<!-- ========================================================= -->
+<!-- RECENT PURCHASES -->
+<!-- ========================================================= -->
+
+<div class="row">
+
+    <div class="col-md-12">
+
+        <div class="card shadow">
+
+
+            <div class="card-header bg-primary text-white">
+
+                Recent Purchases
+
+            </div>
+
+
+            <div class="card-body">
+
+                <table class="table table-striped">
+
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Purchase No
+                            </th>
+
+                            <th>
+                                Supplier
+                            </th>
+
+                            <th>
+                                Total
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+
+                    {% for purchase in recent_purchases %}
+
+                        <tr>
+
+                            <td>
+                                {{ purchase.purchase_no }}
+                            </td>
+
+                            <td>
+                                {{ purchase.supplier }}
+                            </td>
+
+                            <td>
+                                ₹ {{ purchase.grand_total }}
+                            </td>
+
+                        </tr>
+
+
+                    {% empty %}
+
+                        <tr>
+
+                            <td colspan="3">
+
+                                No Purchases Found
+
+                            </td>
+
+                        </tr>
+
+                    {% endfor %}
+
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- ========================================================= -->
+<!-- CHART JAVASCRIPT -->
+<!-- ========================================================= -->
+
+<script>
+
+
+/* =========================================================
+   MONTHLY SALES CHART
+   ========================================================= */
+
+new Chart(
+    document.getElementById('salesChart'),
+    {
+
+        type: 'line',
+
+        data: {
+
+            labels: {{ sales_labels|safe }},
+
+            datasets: [
+
+                {
+
+                    label: 'Monthly Sales',
+
+                    data: {{ sales_values|safe }},
+
+                    borderColor: 'green',
+
+                    backgroundColor: 'rgba(0,128,0,0.2)',
+
+                    fill: true,
+
+                    tension: 0.4
+
+                }
+
+            ]
+
+        }
+
+    }
+);
+
+
+
+/* =========================================================
+   MONTHLY PURCHASES CHART
+   ========================================================= */
+
+new Chart(
+    document.getElementById('purchaseChart'),
+    {
+
+        type: 'bar',
+
+        data: {
+
+            labels: {{ purchase_labels|safe }},
+
+            datasets: [
+
+                {
+
+                    label: 'Monthly Purchases',
+
+                    data: {{ purchase_values|safe }},
+
+                    backgroundColor: 'orange'
+
+                }
+
+            ]
+
+        }
+
+    }
+);
+
+
+</script>
+
+
+{% endblock %}

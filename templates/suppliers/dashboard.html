@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+<div class="card shadow">
+
+<div class="card-body text-center">
+
+<h2>Supplier Management</h2>
+
+<p class="text-muted">
+Manage all supplier details here.
+</p>
+
+<a href="{% url 'add_supplier' %}" class="btn btn-success">
+➕ Add Supplier
+</a>
+
+<a href="{% url 'view_suppliers' %}" class="btn btn-primary">
+📋 View Suppliers
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+{% endblock %}

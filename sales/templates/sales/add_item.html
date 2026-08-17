@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+            <h3>Add Product to Invoice</h3>
+        </div>
+
+        <div class="card-body">
+
+            <h5>Invoice : {{ sale.invoice_no }}</h5>
+            <h5>Customer : {{ sale.customer.name }}</h5>
+
+            <hr>
+
+            <form method="POST">
+                {% csrf_token %}
+
+                <div class="mb-3">
+                    <label>Product</label>
+                    <select name="product" class="form-control">
+                        {% for product in products %}
+                        <option value="{{ product.id }}">
+                            {{ product.product_name }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label>Quantity</label>
+                    <input type="number"
+                           name="quantity"
+                           class="form-control"
+                           required>
+                </div>
+
+                <button class="btn btn-success">
+                    Add Item
+                </button>
+
+            </form>
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

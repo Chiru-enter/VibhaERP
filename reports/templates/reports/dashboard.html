@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <h2>Reports Dashboard</h2>
+
+    <hr>
+
+    <a href="{% url 'sales_report' %}" class="btn btn-primary">
+        Sales Report
+    </a>
+
+    <a href="{% url 'purchase_report' %}" class="btn btn-success">
+        Purchase Report
+    </a>
+
+    <a href="{% url 'inventory_report' %}" class="btn btn-warning">
+        Inventory Report
+    </a>
+
+</div>
+
+{% endblock %}

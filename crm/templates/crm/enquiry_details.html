@@ -1,0 +1,299 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container-fluid mt-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+            <h2 class="fw-bold">Enquiry Details</h2>
+            <p class="text-muted mb-0">
+                {{ enquiry.enquiry_no }}
+            </p>
+        </div>
+
+        <div class="d-flex gap-2">
+
+            <a href="{% url 'crm_edit_enquiry' enquiry.id %}"
+               class="btn btn-warning">
+                Edit
+            </a>
+
+            <a href="{% url 'crm_dashboard' %}"
+               class="btn btn-secondary">
+                ← Back
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <div class="card shadow-sm border-0">
+
+        <div class="card-header bg-primary text-white">
+
+            <h5 class="mb-0">
+                Enquiry Information
+            </h5>
+
+        </div>
+
+
+        <div class="card-body">
+
+            <div class="row">
+
+                <div class="col-md-6">
+
+                    <h6 class="text-muted">
+                        Enquiry Number
+                    </h6>
+
+                    <p class="fw-bold">
+                        {{ enquiry.enquiry_no }}
+                    </p>
+
+                </div>
+
+
+                <div class="col-md-6">
+
+                    <h6 class="text-muted">
+                        Customer
+                    </h6>
+
+                    <p class="fw-bold">
+                        {{ enquiry.customer.customer_name }}
+                    </p>
+
+                </div>
+
+
+                <div class="col-md-6">
+
+                    <h6 class="text-muted">
+                        Company
+                    </h6>
+
+                    <p>
+                        {{ enquiry.company|default:"-" }}
+                    </p>
+
+                </div>
+
+
+                <div class="col-md-6">
+
+                    <h6 class="text-muted">
+                        Contact Person
+                    </h6>
+
+                    <p>
+                        {{ enquiry.contact_person|default:"-" }}
+                    </p>
+
+                </div>
+
+
+                <div class="col-md-6">
+
+                    <h6 class="text-muted">
+                        Phone
+                    </h6>
+
+                    <p>
+                        {{ enquiry.phone|default:"-" }}
+                    </p>
+
+                </div>
+
+
+                <div class="col-md-6">
+
+                    <h6 class="text-muted">
+                        Email
+                    </h6>
+
+                    <p>
+                        {{ enquiry.email|default:"-" }}
+                    </p>
+
+                </div>
+
+
+                <div class="col-md-6">
+
+                    <h6 class="text-muted">
+                        City
+                    </h6>
+
+                    <p>
+                        {{ enquiry.city|default:"-" }}
+                    </p>
+
+                </div>
+
+
+                <div class="col-md-6">
+
+                    <h6 class="text-muted">
+                        Project
+                    </h6>
+
+                    <p>
+                        {{ enquiry.project_name }}
+                    </p>
+
+                </div>
+
+
+                <div class="col-md-6">
+
+                    <h6 class="text-muted">
+                        Sales Executive
+                    </h6>
+
+                    <p>
+                        {{ enquiry.sales_executive|default:"-" }}
+                    </p>
+
+                </div>
+
+
+                <div class="col-md-6">
+
+                    <h6 class="text-muted">
+                        Expected Value
+                    </h6>
+
+                    <p class="fw-bold">
+                        ₹ {{ enquiry.expected_value }}
+                    </p>
+
+                </div>
+
+
+                <div class="col-md-6">
+
+                    <h6 class="text-muted">
+                        Expected Closing Date
+                    </h6>
+
+                    <p>
+                        {{ enquiry.expected_closing_date|default:"-" }}
+                    </p>
+
+                </div>
+
+
+                <div class="col-md-6">
+
+                    <h6 class="text-muted">
+                        Lead Source
+                    </h6>
+
+                    <p>
+                        {{ enquiry.lead_source }}
+                    </p>
+
+                </div>
+
+
+                <div class="col-md-6">
+
+                    <h6 class="text-muted">
+                        Status
+                    </h6>
+
+                    <p>
+
+                        {% if enquiry.status == "Won" %}
+
+                            <span class="badge bg-success">
+                                Won
+                            </span>
+
+                        {% elif enquiry.status == "Lost" %}
+
+                            <span class="badge bg-danger">
+                                Lost
+                            </span>
+
+                        {% elif enquiry.status == "Follow-up" %}
+
+                            <span class="badge bg-warning text-dark">
+                                Follow-up
+                            </span>
+
+                        {% elif enquiry.status == "Quotation" %}
+
+                            <span class="badge bg-info">
+                                Quotation
+                            </span>
+
+                        {% else %}
+
+                            <span class="badge bg-primary">
+                                New
+                            </span>
+
+                        {% endif %}
+
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <hr>
+
+
+            <h5 class="mb-3">
+                Notes / Requirements
+            </h5>
+
+            <div class="bg-light p-3 rounded">
+
+                {% if enquiry.notes %}
+
+                    {{ enquiry.notes }}
+
+                {% else %}
+
+                    <span class="text-muted">
+                        No notes available.
+                    </span>
+
+                {% endif %}
+
+            </div>
+
+
+            {% if enquiry.drawing %}
+
+                <hr>
+
+                <h5 class="mb-3">
+                    Attached Document
+                </h5>
+
+                <a href="{{ enquiry.drawing.url }}"
+                   target="_blank"
+                   class="btn btn-info">
+
+                    View Drawing / Document
+
+                </a>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

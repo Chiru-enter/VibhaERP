@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <h2>Inventory List</h2>
+
+    <table class="table table-bordered table-striped">
+
+        <thead class="table-dark">
+            <tr>
+                <th>Product ID</th>
+                <th>Product Name</th>
+                <th>Available Stock</th>
+                <th>Reorder Level</th>
+                <th>Last Updated</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+        {% for item in inventory %}
+
+            <tr>
+
+                <td>{{ item.product.product_id }}</td>
+
+                <td>{{ item.product.product_name }}</td>
+
+                <td>{{ item.quantity }}</td>
+
+                <td>{{ item.reorder_level }}</td>
+
+                <td>{{ item.last_updated }}</td>
+
+                <td>
+                    {% if item.quantity <= item.reorder_level %}
+                        <span class="badge bg-danger">
+                            Reorder Required
+                        </span>
+                    {% else %}
+                        <span class="badge bg-success">
+                            In Stock
+                        </span>
+                    {% endif %}
+                </td>
+
+                <td>
+
+                    <a href="{% url 'stock_in' item.id %}"
+                       class="btn btn-success btn-sm mb-1">
+                        Stock In
+                    </a>
+
+                    <br>
+
+                    <a href="{% url 'stock_out' item.id %}"
+                       class="btn btn-danger btn-sm mt-1">
+                        Stock Out
+                    </a>
+
+                </td>
+
+            </tr>
+
+        {% empty %}
+
+            <tr>
+                <td colspan="7" class="text-center">
+                    No Inventory Available
+                </td>
+            </tr>
+
+        {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+{% endblock %}

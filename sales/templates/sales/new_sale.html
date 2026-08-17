@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <div class="card shadow">
+
+        <div class="card-header bg-success text-white">
+            <h3>Create New Sale</h3>
+        </div>
+
+        <div class="card-body">
+
+            <form method="POST">
+
+                {% csrf_token %}
+
+                <div class="mb-3">
+                    <label>Invoice Number</label>
+                    <input type="text"
+                           name="invoice_no"
+                           class="form-control"
+                           placeholder="INV001"
+                           required>
+                </div>
+
+                <div class="mb-3">
+                    <label>Customer</label>
+
+                    <select name="customer" class="form-control">
+
+                        {% for customer in customers %}
+
+                            <option value="{{ customer.id }}">
+                                {{ customer.customer_name }}
+                            </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+                <div class="mb-3">
+
+                    <label>Product</label>
+
+                    <select name="product" class="form-control">
+
+                        {% for product in products %}
+
+                            <option value="{{ product.id }}">
+                                {{ product.product_name }}
+                            </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+                <div class="mb-3">
+
+                    <label>Quantity</label>
+
+                    <input type="number"
+                           name="quantity"
+                           class="form-control"
+                           min="1"
+                           required>
+
+                </div>
+
+                <!-- NEW FIELD -->
+                <div class="mb-3">
+
+                    <label>Paid Amount</label>
+
+                    <input type="number"
+                           name="paid_amount"
+                           class="form-control"
+                           min="0"
+                           step="0.01"
+                           value="0"
+                           required>
+
+                </div>
+
+                <button class="btn btn-success">
+                    Save Sale
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

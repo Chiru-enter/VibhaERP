@@ -1,0 +1,211 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <div class="card shadow">
+
+        <div class="card-header bg-warning">
+
+            <h3>💰 Make Supplier Payment</h3>
+
+        </div>
+
+        <div class="card-body">
+
+            <h5>Purchase Details</h5>
+
+            <table class="table table-bordered">
+
+                <tr>
+                    <th>Purchase No</th>
+                    <td>{{ purchase.purchase_no }}</td>
+                </tr>
+
+                <tr>
+                    <th>Supplier</th>
+                    <td>{{ purchase.supplier.supplier_name }}</td>
+                </tr>
+
+                <tr>
+                    <th>Grand Total</th>
+                    <td>₹ {{ purchase.grand_total }}</td>
+                </tr>
+
+                <tr>
+                    <th>Paid Amount</th>
+                    <td>₹ {{ purchase.paid_amount }}</td>
+                </tr>
+
+                <tr>
+                    <th>Balance Amount</th>
+                    <td>₹ {{ purchase.balance_amount }}</td>
+                </tr>
+
+                <tr>
+
+                    <th>Status</th>
+
+                    <td>
+
+                        {% if purchase.payment_status == "Paid" %}
+
+                            <span class="badge bg-success">
+                                Paid
+                            </span>
+
+                        {% elif purchase.payment_status == "Partial" %}
+
+                            <span class="badge bg-warning text-dark">
+                                Partial
+                            </span>
+
+                        {% else %}
+
+                            <span class="badge bg-danger">
+                                Pending
+                            </span>
+
+                        {% endif %}
+
+                    </td>
+
+                </tr>
+
+            </table>
+
+            <hr>
+
+            <form method="POST">
+
+                {% csrf_token %}
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Payment Amount
+                    </label>
+
+                    <input
+                        type="number"
+                        name="amount"
+                        step="0.01"
+                        min="0.01"
+                        max="{{ purchase.balance_amount }}"
+                        class="form-control"
+                        placeholder="Enter payment amount"
+                        required>
+
+                </div>
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Payment Mode
+                    </label>
+
+                    <select
+                        name="payment_mode"
+                        class="form-select"
+                        required>
+
+                        <option value="">Select Payment Mode</option>
+                        <option value="Cash">Cash</option>
+                        <option value="UPI">UPI</option>
+                        <option value="Card">Card</option>
+                        <option value="Bank Transfer">Bank Transfer</option>
+
+                    </select>
+
+                </div>
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Remarks
+                    </label>
+
+                    <textarea
+                        name="remarks"
+                        class="form-control"
+                        rows="3"
+                        placeholder="Optional remarks"></textarea>
+
+                </div>
+
+                <button
+                    type="submit"
+                    class="btn btn-success">
+
+                    💰 Make Payment
+
+                </button>
+
+                <a
+                    href="{% url 'purchase_details' purchase.id %}"
+                    class="btn btn-secondary">
+
+                    Back
+
+                </a>
+
+            </form>
+
+            <hr>
+
+            <h5>Payment History</h5>
+
+            <table class="table table-bordered table-striped">
+
+                <thead class="table-dark">
+
+                    <tr>
+
+                        <th>Date</th>
+                        <th>Amount</th>
+                        <th>Mode</th>
+                        <th>Remarks</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                {% for payment in payments %}
+
+                    <tr>
+
+                        <td>{{ payment.payment_date }}</td>
+                        <td>₹ {{ payment.amount }}</td>
+                        <td>{{ payment.payment_mode }}</td>
+                        <td>{{ payment.remarks }}</td>
+
+                    </tr>
+
+                {% empty %}
+
+                    <tr>
+
+                        <td colspan="4" class="text-center text-muted">
+
+                            No payments made yet.
+
+                        </td>
+
+                    </tr>
+
+                {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

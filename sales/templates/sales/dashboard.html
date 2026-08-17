@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <div class="card shadow">
+
+        <div class="card-header bg-primary text-white">
+            <h2>Sales Dashboard</h2>
+        </div>
+
+        <div class="card-body text-center">
+
+            <a href="{% url 'new_sale' %}" class="btn btn-success m-2">
+                ➕ New Sale
+            </a>
+
+            <a href="{% url 'sales_history' %}" class="btn btn-info m-2">
+                📄 Sales History
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

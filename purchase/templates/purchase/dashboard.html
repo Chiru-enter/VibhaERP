@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <h2>Purchase Dashboard</h2>
+
+    <hr>
+
+    <a href="{% url 'new_purchase' %}" class="btn btn-primary">
+        New Purchase
+    </a>
+
+    <a href="{% url 'purchase_history' %}" class="btn btn-success">
+        Purchase History
+    </a>
+
+</div>
+
+{% endblock %}

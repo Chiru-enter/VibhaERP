@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+<div class="card shadow">
+
+<div class="card-header bg-warning">
+<h3>Edit Supplier</h3>
+</div>
+
+<div class="card-body">
+
+<form method="POST">
+
+{% csrf_token %}
+
+<div class="mb-3">
+<label>Supplier ID</label>
+<input type="text" name="supplier_id" value="{{ supplier.supplier_id }}" class="form-control" required>
+</div>
+
+<div class="mb-3">
+<label>Supplier Name</label>
+<input type="text" name="supplier_name" value="{{ supplier.supplier_name }}" class="form-control" required>
+</div>
+
+<div class="mb-3">
+<label>Contact Person</label>
+<input type="text" name="contact_person" value="{{ supplier.contact_person }}" class="form-control" required>
+</div>
+
+<div class="mb-3">
+<label>Phone</label>
+<input type="text" name="phone" value="{{ supplier.phone }}" class="form-control" required>
+</div>
+
+<div class="mb-3">
+<label>Email</label>
+<input type="email" name="email" value="{{ supplier.email }}" class="form-control" required>
+</div>
+
+<div class="mb-3">
+<label>Address</label>
+<textarea name="address" class="form-control" rows="3">{{ supplier.address }}</textarea>
+</div>
+
+<button type="submit" class="btn btn-success">
+
+Update Supplier
+
+</button>
+
+<a href="{% url 'view_suppliers' %}" class="btn btn-secondary">
+
+Cancel
+
+</a>
+
+</form>
+
+</div>
+
+</div>
+
+</div>
+
+{% endblock %}

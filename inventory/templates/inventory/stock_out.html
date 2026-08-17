@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <h3>Stock Out</h3>
+
+    <div class="card p-4">
+
+        <h5>{{ inventory.product.product_name }}</h5>
+
+        <p>
+            Current Stock :
+            <strong>{{ inventory.quantity }}</strong>
+        </p>
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <div class="mb-3">
+                <label>Remove Quantity</label>
+
+                <input
+                    type="number"
+                    name="quantity"
+                    class="form-control"
+                    min="1"
+                    required>
+
+            </div>
+
+            <button class="btn btn-danger">
+                Update Stock
+            </button>
+
+            <a href="{% url 'view_inventory' %}"
+               class="btn btn-secondary">
+                Cancel
+            </a>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

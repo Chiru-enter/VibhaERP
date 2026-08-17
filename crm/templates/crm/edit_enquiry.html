@@ -1,0 +1,347 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container-fluid mt-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+            <h2 class="fw-bold">Edit Enquiry</h2>
+
+            <p class="text-muted mb-0">
+                {{ enquiry.enquiry_no }}
+            </p>
+        </div>
+
+        <a href="{% url 'crm_enquiry_details' enquiry.id %}"
+           class="btn btn-secondary">
+
+            ← Back
+
+        </a>
+
+    </div>
+
+
+    <div class="card shadow-sm border-0">
+
+        <div class="card-header bg-warning">
+
+            <h5 class="mb-0">
+                Update Enquiry
+            </h5>
+
+        </div>
+
+
+        <div class="card-body">
+
+            <form method="POST"
+                  enctype="multipart/form-data">
+
+                {% csrf_token %}
+
+
+                <div class="row">
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label">
+                            Enquiry Number
+                        </label>
+
+                        <input type="text"
+                               class="form-control"
+                               value="{{ enquiry.enquiry_no }}"
+                               readonly>
+
+                    </div>
+
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label">
+                            Customer *
+                        </label>
+
+                        <select name="customer"
+                                class="form-select"
+                                required>
+
+                            {% for customer in customers %}
+
+                                <option value="{{ customer.id }}"
+                                    {% if customer.id == enquiry.customer.id %}
+                                        selected
+                                    {% endif %}>
+
+                                    {{ customer.customer_name }}
+
+                                </option>
+
+                            {% endfor %}
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label">
+                            Company
+                        </label>
+
+                        <input type="text"
+                               name="company"
+                               class="form-control"
+                               value="{{ enquiry.company }}">
+
+                    </div>
+
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label">
+                            Contact Person
+                        </label>
+
+                        <input type="text"
+                               name="contact_person"
+                               class="form-control"
+                               value="{{ enquiry.contact_person }}">
+
+                    </div>
+
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label">
+                            Phone
+                        </label>
+
+                        <input type="text"
+                               name="phone"
+                               class="form-control"
+                               value="{{ enquiry.phone }}">
+
+                    </div>
+
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label">
+                            Email
+                        </label>
+
+                        <input type="email"
+                               name="email"
+                               class="form-control"
+                               value="{{ enquiry.email }}">
+
+                    </div>
+
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label">
+                            City
+                        </label>
+
+                        <input type="text"
+                               name="city"
+                               class="form-control"
+                               value="{{ enquiry.city }}">
+
+                    </div>
+
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label">
+                            Project Name *
+                        </label>
+
+                        <input type="text"
+                               name="project_name"
+                               class="form-control"
+                               value="{{ enquiry.project_name }}"
+                               required>
+
+                    </div>
+
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label">
+                            Sales Executive
+                        </label>
+
+                        <input type="text"
+                               name="sales_executive"
+                               class="form-control"
+                               value="{{ enquiry.sales_executive }}">
+
+                    </div>
+
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label">
+                            Expected Value
+                        </label>
+
+                        <input type="number"
+                               name="expected_value"
+                               class="form-control"
+                               step="0.01"
+                               value="{{ enquiry.expected_value }}">
+
+                    </div>
+
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label">
+                            Expected Closing Date
+                        </label>
+
+                        <input type="date"
+                               name="expected_closing_date"
+                               class="form-control"
+                               value="{{ enquiry.expected_closing_date|date:'Y-m-d' }}">
+
+                    </div>
+
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label">
+                            Lead Source
+                        </label>
+
+                        <select name="lead_source"
+                                class="form-select">
+
+                            <option value="Website"
+                                {% if enquiry.lead_source == "Website" %}selected{% endif %}>
+                                Website
+                            </option>
+
+                            <option value="Dealer"
+                                {% if enquiry.lead_source == "Dealer" %}selected{% endif %}>
+                                Dealer
+                            </option>
+
+                            <option value="Architect"
+                                {% if enquiry.lead_source == "Architect" %}selected{% endif %}>
+                                Architect
+                            </option>
+
+                            <option value="Tender"
+                                {% if enquiry.lead_source == "Tender" %}selected{% endif %}>
+                                Tender
+                            </option>
+
+                            <option value="Walk-in"
+                                {% if enquiry.lead_source == "Walk-in" %}selected{% endif %}>
+                                Walk-in
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label">
+                            Status
+                        </label>
+
+                        <select name="status"
+                                class="form-select">
+
+                            <option value="New"
+                                {% if enquiry.status == "New" %}selected{% endif %}>
+                                New
+                            </option>
+
+                            <option value="Follow-up"
+                                {% if enquiry.status == "Follow-up" %}selected{% endif %}>
+                                Follow-up
+                            </option>
+
+                            <option value="Quotation"
+                                {% if enquiry.status == "Quotation" %}selected{% endif %}>
+                                Quotation
+                            </option>
+
+                            <option value="Won"
+                                {% if enquiry.status == "Won" %}selected{% endif %}>
+                                Won
+                            </option>
+
+                            <option value="Lost"
+                                {% if enquiry.status == "Lost" %}selected{% endif %}>
+                                Lost
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="col-md-12 mb-3">
+
+                        <label class="form-label">
+                            Notes / Requirements
+                        </label>
+
+                        <textarea name="notes"
+                                  class="form-control"
+                                  rows="5">{{ enquiry.notes }}</textarea>
+
+                    </div>
+
+
+                    <div class="col-md-12 mb-4">
+
+                        <label class="form-label">
+                            Replace Drawing / Document
+                        </label>
+
+                        <input type="file"
+                               name="drawing"
+                               class="form-control">
+
+                    </div>
+
+                </div>
+
+
+                <button type="submit"
+                        class="btn btn-success">
+
+                    Save Changes
+
+                </button>
+
+
+                <a href="{% url 'crm_enquiry_details' enquiry.id %}"
+                   class="btn btn-secondary">
+
+                    Cancel
+
+                </a>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

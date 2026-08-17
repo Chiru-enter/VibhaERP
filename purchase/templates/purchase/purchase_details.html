@@ -1,0 +1,277 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <div class="card shadow">
+
+        <div class="card-header bg-primary text-white">
+
+            <h2>Purchase Invoice</h2>
+
+        </div>
+
+        <div class="card-body">
+
+            <a href="{% url 'purchase_add_item' purchase.id %}" class="btn btn-success mb-3">
+
+                + Add Product
+
+            </a>
+
+            <div class="row">
+
+                <div class="col-md-6">
+
+                    <h5>Purchase Information</h5>
+
+                    <p>
+                        <strong>Purchase No :</strong>
+                        {{ purchase.purchase_no }}
+                    </p>
+
+                    <p>
+                        <strong>Date :</strong>
+                        {{ purchase.purchase_date }}
+                    </p>
+
+                </div>
+
+                <div class="col-md-6">
+
+                    <h5>Supplier Information</h5>
+
+                    <p>
+                        <strong>Name :</strong>
+                        {{ purchase.supplier.supplier_name }}
+                    </p>
+
+                    <p>
+                        <strong>Supplier ID :</strong>
+                        {{ purchase.supplier.supplier_id }}
+                    </p>
+
+                </div>
+
+            </div>
+
+            <hr>
+
+            <table class="table table-bordered">
+
+                <thead class="table-dark">
+
+                    <tr>
+
+                        <th>Product</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Total</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                {% for item in items %}
+
+                    <tr>
+
+                        <td>{{ item.product.product_name }}</td>
+                        <td>{{ item.quantity }}</td>
+                        <td>₹ {{ item.price }}</td>
+                        <td>₹ {{ item.total }}</td>
+
+                    </tr>
+
+                {% empty %}
+
+                    <tr>
+
+                        <td colspan="4" class="text-center">
+
+                            No Products Added
+
+                        </td>
+
+                    </tr>
+
+                {% endfor %}
+
+                </tbody>
+
+            </table>
+
+            <div class="row justify-content-end">
+
+                <div class="col-md-5">
+
+                    <table class="table table-bordered">
+
+                        <tr>
+
+                            <th>Sub Total</th>
+                            <td>₹ {{ purchase.sub_total }}</td>
+
+                        </tr>
+
+                        <tr>
+
+                            <th>CGST (9%)</th>
+                            <td>₹ {{ purchase.cgst_amount }}</td>
+
+                        </tr>
+
+                        <tr>
+
+                            <th>SGST (9%)</th>
+                            <td>₹ {{ purchase.sgst_amount }}</td>
+
+                        </tr>
+
+                        <tr class="table-primary">
+
+                            <th>Grand Total</th>
+                            <th>₹ {{ purchase.grand_total }}</th>
+
+                        </tr>
+
+                        <tr>
+
+                            <th>Paid Amount</th>
+                            <td>₹ {{ purchase.paid_amount }}</td>
+
+                        </tr>
+
+                        <tr>
+
+                            <th>Balance</th>
+                            <td>₹ {{ purchase.balance_amount }}</td>
+
+                        </tr>
+
+                        <tr>
+
+                            <th>Status</th>
+
+                            <td class="text-center">
+
+                                {% if purchase.payment_status == "Paid" %}
+
+                                    <span class="badge bg-success fs-6">
+                                        Paid
+                                    </span>
+
+                                {% elif purchase.payment_status == "Partial" %}
+
+                                    <span class="badge bg-warning text-dark fs-6">
+                                        Partial
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="badge bg-danger fs-6">
+                                        Pending
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+                        </tr>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+            <hr>
+
+            <h4>Payment History</h4>
+
+            <table class="table table-bordered">
+
+                <thead class="table-dark">
+
+                    <tr>
+
+                        <th>Date</th>
+                        <th>Amount</th>
+                        <th>Mode</th>
+                        <th>Remarks</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                {% for payment in payments %}
+
+                    <tr>
+
+                        <td>{{ payment.payment_date }}</td>
+                        <td>₹ {{ payment.amount }}</td>
+                        <td>{{ payment.payment_mode }}</td>
+                        <td>{{ payment.remarks }}</td>
+
+                    </tr>
+
+                {% empty %}
+
+                    <tr>
+
+                        <td colspan="4" class="text-center text-muted">
+
+                            No payments recorded.
+
+                        </td>
+
+                    </tr>
+
+                {% endfor %}
+
+                </tbody>
+
+            </table>
+
+            <hr>
+
+            <div class="text-center">
+
+                <a
+                    href="{% url 'make_payment' purchase.id %}"
+                    class="btn btn-warning">
+
+                    💰 Make Payment
+
+                </a>
+
+                <button
+                    onclick="window.print()"
+                    class="btn btn-success">
+
+                    Print Invoice
+
+                </button>
+
+                <a
+                    href="{% url 'purchase_history' %}"
+                    class="btn btn-secondary">
+
+                    Back
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

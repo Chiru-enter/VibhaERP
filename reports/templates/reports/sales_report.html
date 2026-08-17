@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+<h2>Sales Report</h2>
+
+<a href="{% url 'sales_pdf' %}" class="btn btn-danger mb-3">
+    📄 Export PDF
+</a>
+
+<hr>
+
+<table class="table table-bordered">
+
+<thead>
+
+<tr>
+<th>Invoice</th>
+<th>Customer</th>
+<th>Date</th>
+<th>Total</th>
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for sale in sales %}
+
+<tr>
+
+<td>{{ sale.invoice_no }}</td>
+<td>{{ sale.customer.customer_name }}</td>
+<td>{{ sale.sale_date }}</td>
+<td>₹ {{ sale.total_amount }}</td>
+
+</tr>
+
+{% empty %}
+
+<tr>
+<td colspan="4" class="text-center">
+No Sales Found
+</td>
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+{% endblock %}

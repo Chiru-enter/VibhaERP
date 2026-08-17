@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <div class="card shadow">
+
+        <div class="card-header bg-dark text-white">
+            <h3>Sales History</h3>
+        </div>
+
+        <div class="card-body">
+
+            <table class="table table-bordered table-striped table-hover">
+
+                <thead class="table-dark">
+
+                    <tr>
+
+                        <th>Invoice No</th>
+                        <th>Customer</th>
+                        <th>Date</th>
+                        <th>Grand Total</th>
+                        <th>Paid</th>
+                        <th>Balance</th>
+                        <th>Status</th>
+                        <th>Action</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                {% for sale in sales %}
+
+                    <tr>
+
+                        <td>{{ sale.invoice_no }}</td>
+
+                        <td>{{ sale.customer.customer_name }}</td>
+
+                        <td>{{ sale.sale_date }}</td>
+
+                        <td>₹ {{ sale.grand_total }}</td>
+
+                        <td>₹ {{ sale.paid_amount }}</td>
+
+                        <td>₹ {{ sale.balance_amount }}</td>
+
+                        <td class="text-center">
+
+                            {% if sale.payment_status == "Paid" %}
+
+                                <span class="badge bg-success">
+                                    Paid
+                                </span>
+
+                            {% elif sale.payment_status == "Partial" %}
+
+                                <span class="badge bg-warning text-dark">
+                                    Partial
+                                </span>
+
+                            {% else %}
+
+                                <span class="badge bg-danger">
+                                    Pending
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+                        <td>
+
+                            <a
+                                href="{% url 'invoice_details' sale.id %}"
+                                class="btn btn-primary btn-sm">
+
+                                View
+
+                            </a>
+
+                            {% if sale.payment_status != "Paid" %}
+
+                            <a
+                                href="{% url 'receive_payment' sale.id %}"
+                                class="btn btn-warning btn-sm">
+
+                                Payment
+
+                            </a>
+
+                            {% endif %}
+
+                        </td>
+
+                    </tr>
+
+                {% empty %}
+
+                    <tr>
+
+                        <td colspan="8" class="text-center">
+
+                            No Sales Found
+
+                        </td>
+
+                    </tr>
+
+                {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
